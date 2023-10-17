@@ -39,9 +39,7 @@ export class DesignView extends BaseView3D{
 		this.exampleTexture = new Texture();
 		this.group = new Group();
 		this.scene.add(this.group);
-	
 		this.scene.background = new Color(0xded6ce);
-
 		this.camera.lookAt(this.scene.position);
 
 		this.lightAmbient = new AmbientLight(0xe8e8e8);
@@ -70,9 +68,6 @@ export class DesignView extends BaseView3D{
 			});
 			this.group.add(this.exampleModel);
 		});
-	}
-	update(clock: Clock): void {
-		this.group.scale.set(this.model.zoom, this.model.zoom, this.model.zoom);
 	}
 }
 interface gltfMesh extends THREE.Object3D<THREE.Event> {

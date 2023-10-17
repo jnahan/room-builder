@@ -20,9 +20,6 @@ export class BaseView3D extends BaseView {
 		this.scene.add(this.camera)
 	}
 
-	update(clock: Clock): void {
-	}
-
 	onWindowResize() {
 		this.camera.updateProjectionMatrix();
 		this.renderer.setPixelRatio(window.devicePixelRatio);

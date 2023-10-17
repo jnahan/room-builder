@@ -3,9 +3,6 @@ import * as THREE from 'three';
 import * as PIXI from 'pixi.js'
 import { Material, Mesh, MeshPhongMaterial, MeshStandardMaterial, Raycaster, ShaderMaterial, Shading, TubeBufferGeometry, Vector2 } from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { DragControls } from 'three/examples/jsm/controls/DragControls.js'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as DAT from 'dat.gui';
 
 import { BaseView } from "./view/BaseView";
@@ -13,15 +10,12 @@ import { BaseView2D } from './view/BaseView2D';
 import { BaseView3D } from './view/BaseView3D';
 import { DesignView } from './view/DesignView';
 
-import { TutView } from './view/TutView';
-import { settings } from 'pixi.js';
-
 let model = {
 	mode: 0,
 	color: 0xffffff,
 	d: 2,
 	zoom: 1,
-	activeView: 1,
+	activeView: 0,
 	pointerPosition: new THREE.Vector2(0,0),
 }
 
@@ -31,17 +25,12 @@ let moveMouse = new THREE.Vector2();
 let draggable: THREE.Object3D;
 
 let renderer: THREE.WebGLRenderer;
-let clock = new THREE.Clock();
-let controls: DragControls;
 let stats: any;
 
-
 let designView: DesignView;
-let tutView: TutView;
 let views: BaseView[] = [];
 let gui: DAT.GUI;
 let pixiApp: PIXI.Application = new PIXI.Application();
-
 
 function main() {
 	initScene();
@@ -108,10 +97,6 @@ function initScene() {
 
 	designView = new DesignView(model, renderer);
 	views.push(designView);
-
-	tutView = new TutView(model, pixiApp);
-	views.push(tutView);
-
 	model.pointerPosition = new THREE.Vector2(0,0);
 
 	animate();
@@ -120,9 +105,7 @@ function initScene() {
 let checkObject;
 
 function dragObject(){
-
 	if (draggable != null){
-
 		checkObject = draggable.userData.name;
 
 		if (checkObject != 'planks' && checkObject != 'walls' && checkObject != 'wallsTop' && checkObject != 'windows' && checkObject != 'view' && checkObject != 'floor' ){
@@ -152,10 +135,9 @@ function rotateObjectRight(){
 	}
 }
 
-let prevMat: Material;
-let colorChanged = false;
-
 function initListeners() {
+
+	let colorChanged = false;
 
 	window.addEventListener('resize', onWindowResize, false);
 	window.addEventListener('pointermove', onPointerMove);
@@ -205,13 +187,6 @@ function initListeners() {
 				model.activeView = (model.activeView + 1) % views.length
 				updateGUI();
 				break;
-			case 'ArrowLeft':
-				model.activeView = (model.activeView - 1)
-				if (model.activeView < 0) {
-					model.activeView = views.length - 1;
-				}
-				updateGUI();
-				break;
 			case ' ':
 				colorChanged = true;
 				draggable = null as any
@@ -237,21 +212,6 @@ function animate() {
 			dragObject();
 		}
 	});
-
-	let delta = clock.getDelta();
-
-	switch (model.activeView) {
-		case 0:
-			designView.update(clock);
-			break;
-
-		case 1:
-			tutView.update();
-			break;
-
-		default:
-			break;
-	}
 
 	if(views[model.activeView] instanceof BaseView3D) {
 		renderer.domElement.style.display = 'block'
