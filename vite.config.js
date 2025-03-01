@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	base: 'room-builder',
+	base: '/room-builder/',
 	build: {
-		outDir: '../dist',
+		outDir: './dist',
 	},
 	server: {
 		open: true,

@@ -51,7 +51,7 @@ export class DesignView extends BaseView3D {
 		this.lightPoint.intensity = 0.4;
 		this.scene.add(this.lightPoint);
 
-		const modelLoader = new GLTFLoader().setPath('/room-builder/resources/models/');
+		const modelLoader = new GLTFLoader().setPath('resources/models/');
 		modelLoader.load('room.gltf', (gltf) => {
 			this.exampleModel = gltf.scene;
 			this.exampleModel.position.set(0, -0.5, 0);
