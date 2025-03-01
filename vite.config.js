@@ -1,9 +1,11 @@
-import { defineConfig } from "vite";
+import { defineConfig } from 'vite';
 
-export default defineConfig({ 
-    server: {
-        watch:{
-            usePolling: true
-        }
-    }
- })
+export default defineConfig({
+	base: 'room-builder',
+	build: {
+		outDir: '../dist',
+	},
+	server: {
+		open: true,
+	},
+});
